@@ -1,11 +1,8 @@
 import os
 import streamlit as st
-import yfinance as yf
 import datetime
 import matplotlib.pyplot as plt
-
-# Point yfinance cache to tmp directory
-os.environ["YFINANCE_CACHE_DIR"] = "/tmp"
+import pandas_datareader as pdr
 
 # Streamlit Title
 st.title("Stock Tracker App")
@@ -23,7 +20,7 @@ submit = st.button("Submit")
 
 def plot_stock_data(stock_symbol, start_date, end_date, indices):
     # Fetching the stock data
-    stock_data = yf.download(stock_symbol, start=start_date, end=end_date)['Close']
+    stock_data = pdr.get_data_yahoo(stock_symbol, start=start_date, end=end_date)['Close']
     
     # Plotting stock data
     plt.figure(figsize=(12,6))
@@ -31,10 +28,10 @@ def plot_stock_data(stock_symbol, start_date, end_date, indices):
     
     # Fetching index data if required
     if "S&P500" in indices:
-        sp500 = yf.download('^GSPC', start=start_date, end=end_date)['Close']
+        sp500 = pdr.get_data_yahoo('^GSPC', start=start_date, end=end_date)['Close']
         plt.plot(sp500.index, sp500.values, label='S&P500')
     if "Nasdaq" in indices:
-        nasdaq = yf.download('^IXIC', start=start_date, end=end_date)['Close']
+        nasdaq = pdr.get_data_yahoo('^IXIC', start=start_date, end=end_date)['Close']
         plt.plot(nasdaq.index, nasdaq.values, label='Nasdaq')
     
     plt.title(f"{stock_symbol} vs. Selected Indices")
