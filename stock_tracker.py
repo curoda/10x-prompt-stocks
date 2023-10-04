@@ -1,10 +1,11 @@
+import os
 import streamlit as st
 import yfinance as yf
 import datetime
 import matplotlib.pyplot as plt
 
-# Disabling yfinance cache mechanism
-yf.pdr_override(use_cache=False)
+# Point yfinance cache to tmp directory
+os.environ["YFINANCE_CACHE_DIR"] = "/tmp"
 
 # Streamlit Title
 st.title("Stock Tracker App")
