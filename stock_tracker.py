@@ -19,6 +19,8 @@ indices = st.multiselect("Compare with:", ["S&P500", "Nasdaq"], default=None)
 submit = st.button("Submit")
 
 def plot_stock_data(stock_symbol, start_date, end_date, indices):
+    yf.pdr_override(use_cache=False)
+
     # Fetching the stock data
     stock_data = yf.download(stock_symbol, start=start_date, end=end_date)['Close']
     
